@@ -1,0 +1,39 @@
+.pagination {
+  display: flex;
+  align-items: center;
+}
+
+.pagination .btn-page.btn-page--numbers {
+  display: flex;
+  margin: 0 15px;
+}
+
+.pagination .btn-page > * {
+  border: 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  margin: 0 2px;
+  font-size: 16px;
+}
+
+.pagination .btn-page > *[disabled] {
+  opacity: 0.3;
+}
+
+.pagination .btn-page--numbers .is-active {
+  background-color: rgb(94, 87, 194);
+}
+
+.pagination .btn-page svg {
+  width: 24px;
+  height: 24px;
+}
+
+.pagination .btn-page .ellipsis svg path {
+  fill: #9e9e9e;
+}
