@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-
+import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight, FaEllipsisH } from 'react-icons/fa';
 import api from '../../services/api';
-import { Container } from './styles';
+import { Container, List, ListItem } from './styles';
 import Pagination from '../../components/Pagination';
 
 const PrevBtn = props => (
@@ -26,6 +26,7 @@ const Ellipsis = () => (
 export default function Main() {
   const [usersData, setUsersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentUsers, setCurrentUsers] = useState();
   useEffect(() => {
     api
       .get('/collaborator')
@@ -36,12 +37,35 @@ export default function Main() {
         console.error(err);
       });
   }, []);
-  console.log(
-    usersData.slice((currentPage - 1) * 10, (currentPage - 1) * 10 + 10)
-  );
+
+  useEffect(() => {
+    const sliced = usersData.slice(
+      (currentPage - 1) * 10,
+      (currentPage - 1) * 10 + 10
+    );
+
+    setCurrentUsers(sliced);
+  }, [usersData, currentPage]);
+
   return (
     <>
       <Container>
+        <List>
+          {currentUsers &&
+            currentUsers.map(item => {
+              return (
+                <ListItem
+                  key={item.id}
+                  as={Link}
+                  to={{ pathname: '/feedbacks', aboutProps: { id: item.id } }}
+                >
+                  <h1>{item.name}</h1>
+                  <h4>{item.company}</h4>
+                  <h4>{item.role}</h4>
+                </ListItem>
+              );
+            })}
+        </List>
         <Pagination
           activePage={1}
           page={Math.ceil(usersData.length / 10)}
