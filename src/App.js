@@ -1,5 +1,7 @@
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import GlobalStyle from './styles/global';
+import 'react-toastify/dist/ReactToastify.css';
 import Routes from './Routes';
 
 function App() {
@@ -7,6 +9,7 @@ function App() {
     <>
       <Routes />
       <GlobalStyle />
+      <ToastContainer />
     </>
   );
 }

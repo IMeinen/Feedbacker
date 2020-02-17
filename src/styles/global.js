@@ -15,7 +15,7 @@ export default createGlobalStyle`
   }
 
   body {
-    background-color: #285AEB;
+    background-color: #13143e;
   }
 
   h1{

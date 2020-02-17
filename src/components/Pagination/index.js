@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './pagination.css';
+import { FaChevronLeft, FaChevronRight, FaEllipsisH } from 'react-icons/fa';
 
 function* range(start, end) {
   while (start < end) {
@@ -8,14 +9,25 @@ function* range(start, end) {
   }
 }
 
-const Pagination = ({
-  page,
-  activePage: initialActivePage,
-  prevBtn: PrevBtn,
-  nextBtn: NextBtn,
-  ellipsis: Ellipsis,
-  onChange,
-}) => {
+const PrevBtn = props => (
+  <button type="button" {...props}>
+    <FaChevronLeft color="#333333" />
+  </button>
+);
+
+const NextBtn = props => (
+  <button type="button" {...props}>
+    <FaChevronRight color="#333333" />
+  </button>
+);
+
+const Ellipsis = () => (
+  <span className="ellipsis">
+    <FaEllipsisH color="#333333" />
+  </span>
+);
+
+const Pagination = ({ page, activePage: initialActivePage, onChange }) => {
   const [activePage, setActivePage] = useState(initialActivePage);
 
   useEffect(() => {

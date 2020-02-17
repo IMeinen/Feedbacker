@@ -1,43 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaChevronLeft, FaChevronRight, FaEllipsisH } from 'react-icons/fa';
+import { LoopCircleLoading } from 'react-loadingg';
 import api from '../../services/api';
-import { Container, List, ListItem } from './styles';
+import { Container, List, ListItem, Title } from './styles';
 import Pagination from '../../components/Pagination';
-
-const PrevBtn = props => (
-  <button type="button" {...props}>
-    <FaChevronLeft color="#333333" />
-  </button>
-);
-
-const NextBtn = props => (
-  <button type="button" {...props}>
-    <FaChevronRight color="#333333" />
-  </button>
-);
-
-const Ellipsis = () => (
-  <span className="ellipsis">
-    <FaEllipsisH color="#333333" />
-  </span>
-);
 
 export default function Main() {
   const [usersData, setUsersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentUsers, setCurrentUsers] = useState();
+  const [loading, setLoading] = useState(true);
+
+  // get user data
   useEffect(() => {
     api
       .get('/collaborator')
       .then(res => {
         setUsersData(res.data);
+        setLoading(false);
       })
       .catch(err => {
         console.error(err);
       });
   }, []);
 
+  // slice data to pages
   useEffect(() => {
     const sliced = usersData.slice(
       (currentPage - 1) * 10,
@@ -49,31 +36,45 @@ export default function Main() {
 
   return (
     <>
+      <Title>
+        <h1>FEEDBACKER</h1>
+      </Title>
       <Container>
-        <List>
-          {currentUsers &&
-            currentUsers.map(item => {
-              return (
-                <ListItem
-                  key={item.id}
-                  as={Link}
-                  to={{ pathname: '/feedbacks', aboutProps: { id: item.id } }}
-                >
-                  <h1>{item.name}</h1>
-                  <h4>{item.company}</h4>
-                  <h4>{item.role}</h4>
-                </ListItem>
-              );
-            })}
-        </List>
-        <Pagination
-          activePage={1}
-          page={Math.ceil(usersData.length / 10)}
-          prevBtn={PrevBtn}
-          nextBtn={NextBtn}
-          ellipsis={Ellipsis}
-          onChange={setCurrentPage}
-        />
+        {loading && <LoopCircleLoading />}
+        {!loading && (
+          <List>
+            {currentUsers &&
+              currentUsers.map(item => {
+                return (
+                  <ListItem
+                    key={item.id}
+                    as={Link}
+                    to={{ pathname: '/feedbacks', aboutProps: { id: item.id } }}
+                  >
+                    <div>
+                      <h1>Nome:</h1>
+                      <p>{item.name}</p>
+                    </div>
+                    <div>
+                      <h1>Empresa:</h1>
+                      <p>{item.company}</p>
+                    </div>
+                    <div>
+                      <h1>Cargo :</h1>
+                      <p>{item.role}</p>
+                    </div>
+                  </ListItem>
+                );
+              })}
+          </List>
+        )}
+        {!loading && (
+          <Pagination
+            activePage={1}
+            page={Math.ceil(usersData.length / 10)}
+            onChange={setCurrentPage}
+          />
+        )}
       </Container>
     </>
   );
